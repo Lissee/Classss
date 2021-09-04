@@ -2,6 +2,12 @@
 #include <vector>
 using namespace std;
 
+int GetRandom () {
+    int x;
+    x =  rand () % 2;
+    return x;
+};
+
 class Student {
 protected:
    string name;
@@ -27,7 +33,9 @@ public:
     }
 
     void SetGrade(vector<int> value) {
-        grades = value;
+        for (int x = 0; x<value.size(); x++) {
+            grades.push_back(value[x]);
+        }
     }
 
     //Определение отличника
@@ -38,6 +46,12 @@ public:
             }
         }
         return "Отличник";
+    }
+    void GetGrade () {
+        for (int x = 0; x < grades.size(); x++) {
+            cout << grades[x] << " ";
+        }
+        cout<<endl;
     }
 };
 
@@ -74,24 +88,70 @@ public:
             cout << names_1[x].GetName() << " "<< names_1[x].GetSurname()<< " - " << names_1[x].Five()<<endl;
         }
     }
+    void SetGrades (string name, string surname, vector<int> y) {
+        bool check = true;
+        for (int x = 0; x < names_1.size(); x++) {
+            if (name == names_1[x].GetName() && surname == names_1[x].GetSurname()) {
+                names_1[x].SetGrade(y);
+                bool check = false;
+            }
+        }
+        if (check) {cout << "This student is not in the database" << endl;}
+    }
+    void GetGrades (string name, string surname){
+        bool check = true;
+        for (int x = 0; x < names_1.size(); x++) {
+            if (name == names_1[x].GetName() && surname == names_1[x].GetSurname()) {
+                names_1[x].GetGrade();
+                check = false;
+            }
+        }
+        if (check) {cout << "This student is not in the database" << endl;}
+    }
 };
 
 class Professor {
 protected:
     string name;
     string surname;
+    bool mood = true;
 public:
     Professor() = default;
     Professor ( string name, string surname) : name(name), surname(surname){}
 
-    void SetGrades (string names, string surnames, vector<int> y, Students &A) {
-        bool check = true;
-        for (int x = 0; x < A.names_1.size(); x++){
-            if (names == A.names_1[x].GetName() && surnames == A.names_1[x].GetSurname()){
-        A.names_1[x].SetGrade(y);
-            check = false;}
+    void SetGrades (string names, string surnames, Students &A) {
+            bool check = true;
+            for (int x = 0; x < A.names_1.size(); x++) {
+                if (names == A.names_1[x].GetName() && surnames == A.names_1[x].GetSurname()) {
+                    if (A.names_1[x].Five() == "Отличник" && GetMood() == "Good") {
+                        A.names_1[x].SetGrade({5});
+                    } else if (A.names_1[x].Five() == "Отличник" && GetMood() == "Bad") {
+                        if (GetRandom() == 1) { A.names_1[x].SetGrade({5}); }
+                        else { A.names_1[x].SetGrade({4}); }
+                    } else if (A.names_1[x].Five() == "Не отличник" && GetMood() == "Good") {
+                        A.names_1[x].SetGrade({4});
+                    } else {
+                        if (GetRandom() == 1) { A.names_1[x].SetGrade({4}); }
+                        else { A.names_1[x].SetGrade({3}); }
+                    }
+                    check = false;
+                }
+            }
+            if (check) { cout << "This student is not in the database" << endl; }
         }
-        if (check) { cout << "This student is not in the database"<<endl;}
+
+    void SetMood (string mood) {
+        if (mood == "Good" ){
+            this->mood = true;
+        } else if (mood == "Bad") {
+            this->mood = false;
+        } else {
+            cout << "Error! Enter again!" <<endl;
+        }
+    }
+    string GetMood () {
+        if (mood) {return "Good";}
+        else {return "Bad";}
     }
 };
 
