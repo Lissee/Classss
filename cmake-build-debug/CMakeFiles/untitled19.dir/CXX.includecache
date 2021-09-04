@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/PC/CLionProjects/untitled19/Students_and_teachers.h
+iostream
+-
+vector
+-
+
+/cygdrive/c/Users/PC/CLionProjects/untitled19/main.cpp
+iostream
+-
+Students_and_teachers.h
+/cygdrive/c/Users/PC/CLionProjects/untitled19/Students_and_teachers.h
+
