@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     srand(0);
-//1-ый этап + 2 этап + 3 этап + 4 этап + 5 этап + 6 этап
+//1-ый этап + 2 этап + 3 этап + 4 этап + 5 этап + 6 этап + 7 этап 
     Students S;
     Professor P_Alex("Alexander", "Vladimirov");
     Professor P_Leo("Leonid", "Gusev");
@@ -41,5 +41,14 @@ int main() {
                {"Shevchenko", "Gusev", "Avdaseva","Ivanov", "Dyagilev", "Safonova"});
 
     R.Paraa(P, S);
+    Parents AS("Kirova", "Anna", S.GetStudents());
+    cout << AS.Talking("Good");
+    cout<<"-----"<<endl;
+    cout << AS.Talking( S.GetStudents(),"Lena", "Bad");
+    cout<<"-----"<<endl;
+    AS.Talking(S.GetStudents(), "Good");
+    cout<<"-----"<<endl;
+    int x = rand() %6;
+    cout << AS.Talking(S.GetStudents(), "Good", x);
     return 0;
 }
