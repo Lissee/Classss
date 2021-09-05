@@ -5,7 +5,6 @@ using namespace std;
 int GetRandom () {
     int x;
     x =  rand () % 10;
-    //cout << x<<endl;
     return x;
 
 };
@@ -16,7 +15,7 @@ protected:
    string surname;
   vector<int> grades;
 friend class Professor;
-
+    friend class Parents;
 public:
     Student() = default;
     Student(string name, string surname) : name(name), surname(surname){}
@@ -62,6 +61,7 @@ protected:
     vector<Student> names_1;
     friend class Professor;
     friend class Para;
+    friend class Parents;
 public:
     Students() = default;
     void SetStudents(vector<string> names, vector<string> surnames){
@@ -73,6 +73,9 @@ public:
             names_1[y].SetSurname(surnames[x]);
             y++;
         }
+    }
+    vector<Student> GetStudents () {
+        return names_1;
     }
 
     void GetStudent (string name, string surname) {
@@ -120,6 +123,7 @@ protected:
     int size = 0, maxsize = 5; //количество выставленных оценок
     bool mood = true;
     friend class Para;
+
 public:
     Professor() = default;
     Professor ( string name, string surname) : name(name), surname(surname){}
@@ -234,6 +238,91 @@ void Paraa(Professors &P, Students &S) {
         }
     }
 }
+};
+
+class Parents {
+protected:
+    string name, surname;
+    bool mood = true;
+    vector<Student> children;
+    string talkparents[11] = {"is an excellent student","is very obedient","plays the piano","plays football","likes to play DOTA 2",
+                              "is not studying well","is very harmful","my children are so nice","my children study well",
+                              "some of my children study well some poorly","my children study poorly"};
+public:
+    Parents(string name, string surname, vector<Student> children) : name(name), surname(surname), children(children) {}
+
+   //Говорим про всех
+    string Talking(string mood) {
+        if (mood == "Good"){
+            int k = 7 + (rand() %2);
+            return  talkparents[k]+"\n";
+        } else {
+            int k = 8 + (rand() %2);
+            return  talkparents[k]+"\n";
+        }
+    }
+    //Говорит про конкретного
+    string Talking(vector<Student> S, string name, string mood){
+       for (int x =0; x < S.size(); x++) {
+           if (S[x].GetName() == name) {
+               if (mood == "Good" && S[x].Five() == "Отличник"){
+                   int k =  (rand() %4);
+                   return  name + " " + talkparents[k]+"\n";
+               } else if ((mood == "Good" && S[x].Five() == "Не отличник") || (mood == "Bad" && S[x].Five() == "Отличник")){
+                   int k = (rand() %6);
+                   return  name + " " + talkparents[k]+"\n";
+               } else {
+                   int k = 3 + (rand() %2);
+                   return  name + " " + talkparents[k]+"\n"; }
+           }
+       }
+        return "You don't have a child with that name";
+    }
+    //Говорит про нескольких
+    void Talking(vector<Student> S, string mood){
+        for (int x =0; x < S.size(); x++) {
+            if (GetRandom() <= 5) {
+                if (mood == "Good" && S[x].Five() == "Отличник"){
+                    int k =  (rand() %4);
+                    cout<<  S[x].GetName() + " " + talkparents[k]<<endl;
+                } else if ((mood == "Good" && S[x].Five() == "Не отличник") || (mood == "Bad" && S[x].Five() == "Отличник")){
+                    int k = (rand() %6);
+                    cout<<  S[x].GetName() + " " + talkparents[k]<<endl;
+                } else {
+                    int k = 3 + (rand() %2);
+                    cout<<  S[x].GetName() + " " + talkparents[k]<<endl; }
+            }
+        }
+    }
+    //Говорит про рандомного
+    string Talking(vector<Student> S, string mood, int x){
+                    if (mood == "Good" && S[x].Five() == "Отличник") {
+                        int k = (rand() % 4);
+                        return S[x].GetName() + " " + talkparents[k]+"\n";
+                    } else if ((mood == "Good" && S[x].Five() == "Не отличник") ||
+                               (mood == "Bad" && S[x].Five() == "Отличник")) {
+                        int k = (rand() % 6);
+                        return S[x].GetName() + " " + talkparents[k]+"\n";
+                    } else {
+                        int k = 3 + (rand() % 2);
+                        return S[x].GetName() + " " + talkparents[k] +"\n";
+                    }
+    }
+
+    void SetMood (string mood) {
+        if (mood == "Good" ){
+            this->mood = true;
+        } else if (mood == "Bad") {
+            this->mood = false;
+        } else {
+            cout << "Error! Enter again!" <<endl;
+        }
+    }
+
+    string GetMood () {
+        if (mood) {return "Good";}
+        else {return "Bad";}
+    }
 };
 
 #ifndef UNTITLED19_STUDENTS_AND_TEACHERS_H
