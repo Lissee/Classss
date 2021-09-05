@@ -4,8 +4,10 @@ using namespace std;
 
 int GetRandom () {
     int x;
-    x =  rand () % 2;
+    x =  rand () % 10;
+    //cout << x<<endl;
     return x;
+
 };
 
 class Student {
@@ -115,6 +117,7 @@ class Professor {
 protected:
     string name;
     string surname;
+    int size = 0, maxsize = 5; //количество выставленных оценок
     bool mood = true;
     friend class Para;
 public:
@@ -127,10 +130,20 @@ public:
     void SetSurnameProf(string surname){
         this->surname = surname;
     }
+    int SetMaxSize() {
+       return maxsize = rand()% 5;
+
+    }
     int SetGrades (string names, string surnames, Students &A) {
-            bool check = true;
             for (int x = 0; x < A.names_1.size(); x++) {
                 if (names == A.names_1[x].GetName() && surnames == A.names_1[x].GetSurname()) {
+                    if (size >= maxsize) {
+                        size = 0;
+                        if ((rand() % 2) == 1) {
+                            SetMood ("Good");
+                        } else { SetMood ("Bad");}
+                    }
+                    size ++;
                     if (this->name == "Leonid", this->surname == "Gusev") {
                         A.names_1[x].SetGrade({5});
                         return 5;
@@ -142,7 +155,7 @@ public:
                         A.names_1[x].SetGrade({5});
                         return 5;
                     } else if (A.names_1[x].Five() == "Отличник" && GetMood() == "Bad") {
-                        if (GetRandom() == 1) { A.names_1[x].SetGrade({5});
+                        if (GetRandom() <= 5) { A.names_1[x].SetGrade({5});
                             return 5;}
                         else { A.names_1[x].SetGrade({4});
                             return 4;}
@@ -150,15 +163,16 @@ public:
                         A.names_1[x].SetGrade({4});
                         return 4;
                     } else {
-                        if (GetRandom() == 1) { A.names_1[x].SetGrade({4});
+                        if (GetRandom() <= 5) {
+                            A.names_1[x].SetGrade({4});
                             return  4;}
                         else { A.names_1[x].SetGrade({3});
                             return 3;}
                     }
-                    check = false;
+
                 }
             }
-            if (check) { cout << "This student is not in the database" << endl; }
+            cout << "This student is not in the database" << endl;
         }
 
     void SetMood (string mood) {
@@ -184,6 +198,7 @@ public:
     void SetProff (vector<string> name, vector<string> surname) {
         for (int x = 0; x< name.size(); x++) {
             Professor P;
+            P.SetMaxSize();
             P.SetNameProf(name[x]);
             P.SetSurnameProf(surname[x]);
             proff.push_back(P);
@@ -200,9 +215,9 @@ public:
     }
     void Paraa (Professor &P,Students &S) {
         for (int x = 0; x < S.names_1.size(); x++) {
-            if (GetRandom() == 1) {
+            if (GetRandom() <= 5) {
                 cout << S.names_1[x].GetName() << " " << S.names_1[x].GetSurname() << " - присутствует" << endl;
-                if (GetRandom() == 1) {
+                if (GetRandom() <= 5) {
                     cout << "Grade: " << P.SetGrades(S.names_1[x].GetName(), S.names_1[x].GetSurname(), S) << endl;
                 }
             }
@@ -210,9 +225,9 @@ public:
 }
 void Paraa(Professors &P, Students &S) {
     for (int x = 0; x < S.names_1.size(); x++) {
-        if (GetRandom() == 1) {
+        if (GetRandom() <= 5) {
             cout << S.names_1[x].GetName() << " " << S.names_1[x].GetSurname() << " - присутствует" << endl;
-            if (GetRandom() == 1) {
+            if (GetRandom() <= 5) {
                 cout << "Grade: " << Choice(P).SetGrades(S.names_1[x].GetName(), S.names_1[x].GetSurname(), S)
                 << endl;
             }
