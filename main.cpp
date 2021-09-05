@@ -4,7 +4,8 @@
 using namespace std;
 
 int main() {
-//1-ый этап + 2 этап + 3 этап + 4 этап + 5 этап 
+    srand(0);
+//1-ый этап + 2 этап + 3 этап + 4 этап + 5 этап + 6 этап
     Students S;
     Professor P_Alex("Alexander", "Vladimirov");
     Professor P_Leo("Leonid", "Gusev");
@@ -12,6 +13,7 @@ int main() {
     S.SetStudents({"Anton", "Timur", "Lena", "Anastasia", "Vadim", "Ira", "Vika", "Egor"},
                   {"Shevchenko", "Borisov", "Avdaseva","Lisitcyna", "Dyagilev", "Safonova", "Safonova", "Dyagilev"});
     cout<<endl;
+    P_Alex.SetMaxSize();
     for (int x = 0; x < 3; x++) {
         P_Alex.SetGrades("Timur", "Borisov", S);
         S.GetStudent("Timur", "Borisov");
@@ -20,7 +22,7 @@ int main() {
         S.GetGrades("Timur", "Borisov");
         S.GetGrades("Lena", "Avdaseva");
     }
-    P_Alex.SetMood("Bad");
+
     for (int x = 0; x < 3; x++) {
         P_Alex.SetGrades("Timur", "Borisov", S);
         S.GetStudent("Timur", "Borisov");
