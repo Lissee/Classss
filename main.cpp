@@ -5,50 +5,52 @@ using namespace std;
 
 int main() {
     srand(0);
-//1-ый этап + 2 этап + 3 этап + 4 этап + 5 этап + 6 этап + 7 этап 
-    Students S;
-    Professor P_Alex("Alexander", "Vladimirov");
-    Professor P_Leo("Leonid", "Gusev");
-    Professor P_Arn("Arnold", "Ivanov");
-    S.SetStudents({"Anton", "Timur", "Lena", "Anastasia", "Vadim", "Ira", "Vika", "Egor"},
-                  {"Shevchenko", "Borisov", "Avdaseva","Lisitcyna", "Dyagilev", "Safonova", "Safonova", "Dyagilev"});
-    cout<<endl;
-    P_Alex.SetMaxSize();
-    for (int x = 0; x < 3; x++) {
-        P_Alex.SetGrades("Timur", "Borisov", S);
-        S.GetStudent("Timur", "Borisov");
-        P_Alex.SetGrades("Lena", "Avdaseva", S);
-        S.GetStudent("Lena", "Avdaseva");
-        S.GetGrades("Timur", "Borisov");
-        S.GetGrades("Lena", "Avdaseva");
-    }
+//1-ый этап + 2 этап + 3 этап + 4 этап + 5 этап + 6 этап + 7 этап + 8 этап
+//Создаем студентов
+    Students Petrovi, Sidorovi, Ivanovi, Borisovi, Shevchenko;
 
-    for (int x = 0; x < 3; x++) {
-        P_Alex.SetGrades("Timur", "Borisov", S);
-        S.GetStudent("Timur", "Borisov");
-        P_Alex.SetGrades("Lena", "Avdaseva", S);
-        S.GetStudent("Lena", "Avdaseva");
-        S.GetGrades("Timur", "Borisov");
-        S.GetGrades("Lena", "Avdaseva");
-    }
+    Petrovi.SetStudents({"Anton", "Timur", "Lena"},
+                        {"Petrov", "Petrov", "Petrova"});
+    Sidorovi.SetStudents({"Ekaterina"},{"Sidorova"});
+    Ivanovi.SetStudents({"Anastasia","Ira","Andrei","Alex"},{"Ivanova","Ivanova","Ivanov","Ivanov"});
+    Borisovi.SetStudents({"Igor","Ira"},{"Borisov","Borisova"});
+    Shevchenko.SetStudents({"Lissa","Dima","Alex"},{"Shevchenko","Shevchenko","Shevchenko"});
+
+    Students vse;
+    vse.SetStudents(Petrovi.GetVector());
+    vse.SetStudents(Sidorovi.GetVector());
+    vse.SetStudents(Ivanovi.GetVector());
+    vse.SetStudents(Borisovi.GetVector());
+    vse.SetStudents(Shevchenko.GetVector());
+
+    //Присваиваем студентов родителям
+    Parents Petrova_P( "Anna","Petrova", Petrovi.GetStudents());
+    Parents Sidorova_P("Kira","Sidorova",  Sidorovi.GetStudents());
+    Parents Ivanov_P("Andrey","Ivanov",  Ivanovi.GetStudents());
+    Parents Borisova_P("Lera","Borisov",  Borisovi.GetStudents());
+    Parents Shevchenko_P("Alex","Shevchenko",  Petrovi.GetStudents());
+
+    //Создаем преподавателей
+    Professor P_1("Alexander", "Vladimirov");
+    Professor P_2("Leonid", "Gusev");
+    Professor P_3("Arnold", "Ivanov");
+    Professor P_4("Alexander", "Borisov");
+    Professor P_5("Irina", "Guseva");
+    Professor P_6("Olga", "Avdaseva");
+
     Professors P;
+    //Проводим пары
     Para R;
-    R.Paraa(P_Alex, S);
+    R.Paraa(P_1, vse);
     cout <<"------------------------"<<endl;
-    R.Paraa(P_Arn, S);
+    R.Paraa(P_2, vse);
     cout <<"------------------------"<<endl;
-    P.SetProff({"Anton", "Leonid", "Lena", "Arnold", "Vadim", "Ira"},
-               {"Shevchenko", "Gusev", "Avdaseva","Ivanov", "Dyagilev", "Safonova"});
+    R.Paraa(P_3, vse);
+    cout <<"------------------------"<<endl;
+    R.Paraa(P_5, vse);
+    cout <<"------------------------"<<endl;
+//Собрание
+    parent_teacher_meeting({P_2, P_4, P_5},{Sidorova_P,Ivanov_P,Shevchenko_P});
 
-    R.Paraa(P, S);
-    Parents AS("Kirova", "Anna", S.GetStudents());
-    cout << AS.Talking("Good");
-    cout<<"-----"<<endl;
-    cout << AS.Talking( S.GetStudents(),"Lena", "Bad");
-    cout<<"-----"<<endl;
-    AS.Talking(S.GetStudents(), "Good");
-    cout<<"-----"<<endl;
-    int x = rand() %6;
-    cout << AS.Talking(S.GetStudents(), "Good", x);
     return 0;
 }
