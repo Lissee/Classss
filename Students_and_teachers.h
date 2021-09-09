@@ -4,6 +4,7 @@ using namespace std;
 
 class Parents;
 class Professor;
+class Grandmother;
 
 int GetRandom () {
     int x;
@@ -19,7 +20,8 @@ protected:
   vector<int> grades;
 friend class Professor;
     friend class Parents;
-    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents);
+    friend class Grandmother;
+    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Grandmother> grandmother);
 public:
     Student() = default;
     Student(string name, string surname) : name(name), surname(surname){}
@@ -66,7 +68,8 @@ protected:
     friend class Professor;
     friend class Para;
     friend class Parents;
-    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents);
+    friend class Grandmother;
+    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Grandmother> grandmother);
 public:
     Students() = default;
     void SetStudents(vector<string> names, vector<string> surnames){
@@ -137,7 +140,7 @@ protected:
     int size = 0, maxsize = 5; //количество выставленных оценок
     bool mood = true;
     friend class Para;
-    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Student> students);
+    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Student> students, vector<Grandmother> grandmother);
 public:
     Professor() = default;
     Professor ( string name, string surname) : name(name), surname(surname){}
@@ -276,8 +279,9 @@ protected:
                               "is not studying well", "is very harmful", "my children are so nice",
                               "my children study well",
                               "some of my children study well some poorly", "my children study poorly"};
-    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents);
+    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Grandmother> grandmother);
 public:
+    Parents() = default;
     Parents(string name, string surname, vector<Student> children) : name(name), surname(surname), children(children) {}
 
     string GetSurname(){
@@ -360,8 +364,50 @@ public:
     }
 };
 
+class Grandmother : public Parents {
+protected:
+    string name, surnameg;
+    bool mood = true;
+    vector<Student> children;
 
-   void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents){
+    friend void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Grandmother> grandmother);
+public:
+    Grandmother() = default;
+    Grandmother(string name, string surname, vector<Student> children) : name(name), surnameg(surname), children(children) {}
+    //Говорим про всех
+   string GetGSurname(){
+        return surnameg;
+    };
+    string MyChildTalk () {
+            int k = 7 + (rand() % 2);
+            return talkparents[k] + "\n";
+    }
+
+    //Говорит про конкретного
+    string MyChildTalk (Student S, string name) {
+            int k = (rand() % 4);
+            return name + " " + talkparents[k] + "\n";
+    }
+
+    //Говорит про нескольких
+    void MyChildTalk (vector<Student> S) {
+        for (int x = 0; x < S.size(); x++) {
+            if (GetRandom() <= 5) {
+                int k = (rand() % 4);
+                cout << S[x].GetName() + " " + talkparents[k] << endl;
+            }
+        }
+    }
+
+    //Говорит про рандомного
+    string MyChildTalk(vector<Student> S, int x) {
+        int k = (rand() % 4);
+        return S[x].GetName() + " " + talkparents[k] + "\n";
+    }
+};
+
+
+   void parent_teacher_meeting(vector<Professor> proff, vector<Parents> parents, vector<Grandmother> grandmother){
        vector<Student> students_out;
        bool check;
        cout <<"Собрание:"<<endl;
@@ -372,10 +418,23 @@ public:
                    if (proff[x].GetStudentsP()[y].GetSurname() == parents[z].GetSurname() ||
                        proff[x].GetStudentsP()[y].GetSurname() == parents[z].GetSurname() + "a" ||
                        proff[x].GetStudentsP()[y].GetSurname()+"a" == parents[z].GetSurname() ) {
+
                       cout<< parents[z].Talking(proff[x].GetStudentsP()[y], proff[x].GetStudentsP()[y].GetName(),parents[z].GetMood());
+
                        check = false;
                        break;
                    }
+               }
+               if (check){
+               for (int z = 0; z < grandmother.size(); z++) {
+                   if (proff[x].GetStudentsP()[y].GetSurname() == grandmother[z].GetGSurname() ||
+                       proff[x].GetStudentsP()[y].GetSurname() == grandmother[z].GetGSurname() + "a" ||
+                       proff[x].GetStudentsP()[y].GetSurname()+"a" == grandmother[z].GetGSurname() ) {
+                       cout<< grandmother[z].MyChildTalk(proff[x].GetStudentsP()[y], proff[x].GetStudentsP()[y].GetName());
+                       check = false;
+                       break;
+                   }
+               }
                }
                if (check) {
                    for(int z = 0; z < students_out.size(); z++) {
@@ -383,7 +442,8 @@ public:
                            check = false;
                            break;}
                    }
-                   if(check){ students_out.push_back(proff[x].GetStudentsP()[y]);}
+                   if(check){ students_out.push_back(proff[x].GetStudentsP()[y]);
+                   }
                }
            }
        }
